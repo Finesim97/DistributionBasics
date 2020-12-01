@@ -18,7 +18,7 @@ shinyServer(function(input, output) {
 
     datavals <- reactive({
         set.seed(input$seed)
-        samples <- min(c(input$samples,10^9))
+        samples <- min(c(input$samples,10^6))
         if(input$disttype==types["Eruptions"]){
             return(sample(faithful$eruptions,size = samples,replace = TRUE))
         }else if(input$disttype %in% c(types["Normal"],types["LogNormal"])){
