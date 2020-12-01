@@ -27,7 +27,7 @@ shinyUI(fluidPage(
             helpText("Please select a distribution."),
             numericInput("seed",h3("Seed"),value = 42),
             helpText("Seed for sample generation"),
-            numericInput("samples",h4("Samples"),value = 10, min = 1, max = 10**12),
+            numericInput("samples",h4("Samples"),value = 10, min = 1, max = 10**9),
             helpText("Number of samples to draw"),
             h3("Normal Dist. Parameters"),
             numericInput("mean",h4("Mean"),value = 0),
