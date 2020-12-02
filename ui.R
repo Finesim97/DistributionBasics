@@ -64,7 +64,7 @@ shinyUI(fluidPage(
         # Show a plot of the generated distribution
         mainPanel(
             tabsetPanel(type = "tabs",
-                        tabPanel("Boxplot Methods", plotOutput("boxplots",height = "600px"), renderText(helptext)),
+                        tabPanel("Boxplot Methods", plotOutput("boxplots",height = "600px"), renderText({helptext})),
                         tabPanel("Histogram", plotOutput("hist", height = "600px")),
                         tabPanel("Comparisons", plotOutput("combi", height = "750px"))
             )
