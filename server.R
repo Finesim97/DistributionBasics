@@ -13,6 +13,23 @@ types = list("Normal" = 1, "LogNormal" = 2,"Binomial"=3,"Hypergeom."=4,
              "Eruptions" = 5)
 theme_set(theme_linedraw())
 
+extract_help <- function(pkg, fn = NULL, to = c("txt", "html", "latex", "ex")){
+  to <- match.arg(to)
+  rdbfile <- file.path(find.package(pkg), "help", pkg)
+  rdb <- tools:::fetchRdDB(rdbfile, key = fn)
+  convertor <- switch(to, 
+                      txt   = tools::Rd2txt, 
+                      html  = tools::Rd2HTML, 
+                      latex = tools::Rd2latex, 
+                      ex    = tools::Rd2ex
+  )
+  f <- function(x) capture.output(convertor(x))
+  if(is.null(fn)) lapply(rdb, f) else f(rdb)
+}
+helptext <- extract_help("stats","quantile","txt")
+pos <- sapply(c("_\\\bT_\\\by_\\\bp_\\\be_\\\bs:","_\\\bA_\\\bu_\\\bt_\\\bh_\\\bo_\\\br\\(_\\\bs\\):"),grep,helptext)
+helptext <- paste0(helptext[(pos[1]+1):(pos[2]-1)],collapse = "\n")
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
@@ -55,6 +72,11 @@ shinyServer(function(input, output) {
         ggplot(dat)+ aes(x=Value) +
             geom_histogram(bins=nclass.Sturges(dat$Value),color="black",fill="white") + labs(title="Histogram", subtitle = "Number of bins according to Sturges") + xlab("Value") + ylab("Count")
     })
+
+  output$helptext <- renderText({ 
+    helptext
+  })
+
     output$combi <- renderPlot({
         dat <- data.frame(Value=datavals())
         plotbase <- ggplot(dat) + aes(Value) 
